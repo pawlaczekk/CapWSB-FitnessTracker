@@ -21,7 +21,7 @@ public class HealthMetrics {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private pl.wsb.fitnesstracker.user.api.User user;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     private java.time.LocalDate date;
 
     @Column(name = "weight")
@@ -33,10 +33,11 @@ public class HealthMetrics {
     @Column(name = "heartRate")
     private Integer heartRate;
 
-    public HealthMetrics(Double weight, Double height, pl.wsb.fitnesstracker.user.api.User user, Integer heartRate) {
+    public HealthMetrics(Double weight, Double height, pl.wsb.fitnesstracker.user.api.User user, Integer heartRate, java.time.LocalDate date) {
         this.weight = weight;
         this.height = height;
         this.user = user;
         this.heartRate = heartRate;
+        this.date = date;
     }
 }
