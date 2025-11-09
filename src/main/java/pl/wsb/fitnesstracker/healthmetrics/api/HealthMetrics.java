@@ -17,7 +17,7 @@ public class HealthMetrics {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOnex
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private pl.wsb.fitnesstracker.user.api.User user;
 
