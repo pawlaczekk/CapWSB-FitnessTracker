@@ -1,6 +1,5 @@
 package pl.wsb.fitnesstracker.user.internal;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.wsb.fitnesstracker.user.api.UserDto;
 import pl.wsb.fitnesstracker.user.api.UserSimpleDto;
@@ -13,12 +12,16 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/v1/users")
-@RequiredArgsConstructor
 class UserController {
 
     private final UserServiceImpl userService;
 
     private final UserMapper userMapper;
+
+    public UserController(UserServiceImpl userService, UserMapper userMapper) {
+        this.userService = userService;
+        this.userMapper = userMapper;
+    }
 
     @GetMapping
     public List<UserDto> getAllUsers() {
