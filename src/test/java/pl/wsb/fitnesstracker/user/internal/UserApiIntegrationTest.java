@@ -49,29 +49,11 @@ class UserApiIntegrationTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$[0].firstName").value(user1.getFirstName()))
                 .andExpect(jsonPath("$[0].lastName").value(user1.getLastName()))
-                .andExpect(jsonPath("$[0].birthdate").value(ISO_DATE.format(user1.getBirthdate())))
+                .andExpect(jsonPath("$[0].id").value(user1.getId().intValue()))
 
                 .andExpect(jsonPath("$[1].firstName").value(user2.getFirstName()))
                 .andExpect(jsonPath("$[1].lastName").value(user2.getLastName()))
-                .andExpect(jsonPath("$[1].birthdate").value(ISO_DATE.format(user2.getBirthdate())))
-
-                .andExpect(jsonPath("$[2]").doesNotExist());
-    }
-
-    @Test
-    void shouldReturnAllSimpleUsers_whenGettingAllUsers() throws Exception {
-        User user1 = existingUser(generateUser());
-        User user2 = existingUser(generateUser());
-
-        mockMvc.perform(get("/v1/users/simple").contentType(MediaType.APPLICATION_JSON))
-                .andDo(log())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].firstName").value(user1.getFirstName()))
-                .andExpect(jsonPath("$[0].lastName").value(user1.getLastName()))
-
-                .andExpect(jsonPath("$[1].firstName").value(user2.getFirstName()))
-                .andExpect(jsonPath("$[1].lastName").value(user2.getLastName()))
+                .andExpect(jsonPath("$[1].id").value(user2.getId().intValue()))
 
                 .andExpect(jsonPath("$[2]").doesNotExist());
     }
@@ -95,7 +77,7 @@ class UserApiIntegrationTest extends IntegrationTestBase {
     void shouldReturnDetailsAboutUser_whenGettingUserByEmail() throws Exception {
         User user1 = existingUser(generateUser());
 
-        mockMvc.perform(get("/v1/users/email").param("email", user1.getEmail()).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/users/email").param("emailFragment", user1.getEmail()).contentType(MediaType.APPLICATION_JSON))
                 .andDo(log())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -105,11 +87,11 @@ class UserApiIntegrationTest extends IntegrationTestBase {
 
     @Test
     void shouldReturnAllUsersOlderThan_whenGettingAllUsersOlderThan() throws Exception {
-        User user1 = existingUser(generateUserWithDate(LocalDate.of(2000, 8, 11)));
-        existingUser(generateUserWithDate(LocalDate.of(2024, 8, 11)));
+        User user1 = existingUser(generateUserWithDate(LocalDate.of(1990, 8, 11)));
+        existingUser(generateUserWithDate(LocalDate.of(2010, 8, 11)));
 
 
-        mockMvc.perform(get("/v1/users/older/{time}", LocalDate.of(2024, 8, 10)).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/users/older/{age}", 20).contentType(MediaType.APPLICATION_JSON))
                 .andDo(log())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
