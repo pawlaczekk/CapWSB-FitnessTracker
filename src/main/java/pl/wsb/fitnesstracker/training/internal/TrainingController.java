@@ -5,6 +5,10 @@ import pl.wsb.fitnesstracker.training.api.TrainingDto;
 
 import java.util.List;
 
+/**
+ * REST controller for managing trainings.
+ * Provides endpoints for retrieving training information.
+ */
 @RestController
 @RequestMapping("/v1/trainings")
 class TrainingController {
@@ -17,6 +21,11 @@ class TrainingController {
         this.trainingMapper = trainingMapper;
     }
 
+    /**
+     * Retrieves all trainings from the system.
+     * 
+     * @return list of all trainings as DTOs
+     */
     @GetMapping
     public List<TrainingDto> getAllTrainings() {
         return trainingService.findAllTrainings()
@@ -25,6 +34,12 @@ class TrainingController {
                 .toList();
     }
 
+    /**
+     * Retrieves all trainings for a specific user.
+     * 
+     * @param userId the ID of the user whose trainings to retrieve
+     * @return list of trainings belonging to the specified user
+     */
     @GetMapping("/{userId}")
     public List<TrainingDto> getTrainingsByUserId(@PathVariable Long userId) {
         return trainingService.findTrainingsByUserId(userId)
